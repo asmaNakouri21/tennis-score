@@ -1,6 +1,8 @@
-Tennis Kata
-Rules
-This Kata goal is to implement a simple tennis score computer.
+# **Tennis Kata**
+
+## Rules
+
+**This Kata goal is to implement a simple tennis score computer.**
 
 The scoring system consist in one game, divided by points :
 Each player starts a game with 0 point.
@@ -13,6 +15,8 @@ If the player without advantage wins the ball they are back at “deuce”.
  
 You can found more details about the rules here : ( http://en.wikipedia.org/wiki/Tennis#Scoring )
  
+## Example
+
 Here we want you to develop a java method that will take a String as input containing the character ‘A’ or ‘B’. The character ‘A’ corresponding to “player A won the ball”, and ‘B’ corresponding to “player B won the ball”. The java method should print the score after each won ball (for example : “Player A : 15 / Player B : 30”) and print the winner of the game.
  
 For example the following input “ABABAA” should print :
@@ -23,7 +27,8 @@ For example the following input “ABABAA” should print :
 “Player A : 40 / Player B : 30”
 “Player A wins the game
 
-Used tools:
+## Used tools:
+
   Java 17
   Junit 3.8 for testing
   maven 3
