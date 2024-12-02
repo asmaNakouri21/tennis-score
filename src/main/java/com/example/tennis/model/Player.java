@@ -1,4 +1,4 @@
-package com.example.tennis;
+package com.example.tennis.model;
 
 public class Player {
     private final String name;

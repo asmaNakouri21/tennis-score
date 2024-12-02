@@ -1,7 +1,9 @@
 package com.example.tennis;
 
+import com.example.tennis.enums.GameStateEnum;
 import com.example.tennis.exception.UnknownPlayerException;
 import com.example.tennis.exception.WrongInputException;
+import com.example.tennis.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,10 @@ public class TennisGame {
     public static final String SCORE_MESSAGE_TEMPLATE = "Player A : %s / Player B : %s";
     public static final String DEUCE_MESSAGE = "Deuce";
     public static final String ADVANTAGE_MESSAGE_TEMPLATE = "Deuce, advantage for Player %s";
+    public static final int pointsToWinFromLove = 4;
+    public static final int SCORE_DIFFERENCE_FOR_ADVANTAGE_AFTER_DEUCE = 1;
+    public static final int SCORE_DIFFERENCE_FOR_WIN_AFTER_DEUCE = 2;
+
 
     public List<String> getScoreDetails(String scorerInput) throws Exception {
         List<String> scorers = getScoreListFromScorerInput(scorerInput);
@@ -24,50 +30,56 @@ public class TennisGame {
             Player loserBall = getLooserBall(scorer);
             winnerBall.increaseScore();
             var gameState = getGameState(winnerBall, loserBall);
-            scenario.add(formatedScore(gameState, winnerBall));        }
+            scenario.add(formatedScore(gameState, winnerBall));
+        }
         return scenario;
     }
 
-    private String formatedScore(String roundResult, Player roundScorer) {
-        return switch (roundResult) {
-            case "ADVANTAGE" -> String.format(ADVANTAGE_MESSAGE_TEMPLATE, roundScorer.getName());
-            case "WIN" -> String.format(WIN_MESSAGE_TEMPLATE, roundScorer.getName());
-            case "SCORE" -> String.format(SCORE_MESSAGE_TEMPLATE, playerA.scoreToDisplay(), playerB.scoreToDisplay());
-            case "DEUCE" -> DEUCE_MESSAGE;
-            default -> "";
+    private String formatedScore(GameStateEnum gameState, Player winnerBall) {
+        return switch (gameState) {
+            case ADVANTAGE -> String.format(ADVANTAGE_MESSAGE_TEMPLATE, winnerBall.getName());
+            case WIN -> String.format(WIN_MESSAGE_TEMPLATE, winnerBall.getName());
+            case SCORE -> String.format(SCORE_MESSAGE_TEMPLATE, playerA.scoreToDisplay(), playerB.scoreToDisplay());
+            case DEUCE -> DEUCE_MESSAGE;
         };
     }
 
-    private String getGameState(Player winnerBall, Player loserBall) throws WrongInputException {
+    private GameStateEnum getGameState(Player winnerBall, Player loserBall) throws WrongInputException {
         if (isGameInLoveStage(winnerBall, loserBall)) {
-            if (winnerBall.getScore() == 4) {
-                return "WIN";
-            } else if((winnerBall.getScore() < 4)){
-                return "SCORE";
-            }else{
-                throw new WrongInputException("Unknown player name");
-            }
+            return getGameStateForGameInLove(winnerBall);
         } else {
             if (isDeuce(winnerBall, loserBall)) {
-                return "DEUCE";
+                return GameStateEnum.DEUCE;
             } else {
-                if (winnerBall.getScore() - loserBall.getScore() == 2){
-                    return "WIN";
-                } else if (winnerBall.getScore() - loserBall.getScore() == 1){
-                    return "ADVANTAGE";
-                }
-                else {
-                    throw new WrongInputException("Wrong Input Score");
-                }
+                return getGameStateAfterDeuce(winnerBall, loserBall);
             }
         }
     }
 
+    private GameStateEnum getGameStateAfterDeuce(Player winnerBall, Player loserBall) throws WrongInputException {
+        int scoreDifference = winnerBall.getScore() - loserBall.getScore();
+        return switch (scoreDifference) {
+            case SCORE_DIFFERENCE_FOR_ADVANTAGE_AFTER_DEUCE -> GameStateEnum.ADVANTAGE;
+            case SCORE_DIFFERENCE_FOR_WIN_AFTER_DEUCE -> GameStateEnum.WIN;
+            default -> throw new WrongInputException("Wrong Input Score");
+        };
 
-    private boolean isDeuce(Player roundScorer, Player roundLooser) {
-        return roundScorer.getScore() == roundLooser.getScore();
     }
 
+    private GameStateEnum getGameStateForGameInLove(Player winnerBall) throws WrongInputException {
+        if ((winnerBall.getScore() < pointsToWinFromLove)) {
+            return GameStateEnum.SCORE;
+        } else if (winnerBall.getScore() == pointsToWinFromLove) {
+            return GameStateEnum.WIN;
+        } else {
+            throw new WrongInputException("Wrong Input Score");
+        }
+    }
+
+
+    private boolean isDeuce(Player winnerBall, Player loserBall) {
+        return winnerBall.getScore() == loserBall.getScore();
+    }
 
 
     private List<String> getScoreListFromScorerInput(String gameInput) {
