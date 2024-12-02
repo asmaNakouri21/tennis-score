@@ -55,7 +55,7 @@ public class TennisGameTest {
         TennisGame tennisGame = new TennisGame();
 
         // THEN
-        assertThrows(UnknownPlayerException.class , () -> tennisGame.getScoreDetails(scorerList));
+        assertThrows(IllegalStateException.class , () -> tennisGame.getScoreDetails(scorerList));
     }
 
     @Test
