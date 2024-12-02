@@ -15,21 +15,24 @@ public class TennisGame {
 
     public List<String> getScoreDetails(String scorerInput) throws UnknownPlayerException {
         List<String> scorers = getScoreListFromScorerInput(scorerInput);
-        checkScorerList(scorers);
         for (String scorer : scorers) {
-            updateScores(scorer);
+            Player playerWinner = getPlayerWinner(scorer);
+            playerWinner.increaseScore();
             scenario.add(calculateRoundScore(scorer));
         }
         return scenario;
     }
-    private void updateScores(String scorer) {
-        if (scorer.equals(playerA.getName())) {
-            playerA.increaseScore();
+
+    private Player getPlayerWinner(String score) throws UnknownPlayerException {
+        if (score.equals("A")) {
+            return playerA;
         }
-        if (scorer.equals(playerB.getName())) {
-            playerB.increaseScore();
+        if (score.equals("B")) {
+            return playerB;
         }
+        throw new UnknownPlayerException("Unknown player " + score);
     }
+
     private String calculateRoundScore(String scorerName) {
         if (playerA.getScore() == 4 || playerB.getScore() == 4) {
             return String.format(WIN_MESSAGE, scorerName);
@@ -49,13 +52,6 @@ public class TennisGame {
         };
     }
 
-    private void checkScorerList(List<String> scorers) throws UnknownPlayerException {
-        for (String playerName : scorers) {
-            if (!playerA.getName().equals(playerName) && !playerB.getName().equals(playerName)) {
-                throw new UnknownPlayerException("Unknown player " + playerName);
-            }
-        }
-    }
     private List<String> getScoreListFromScorerInput(String gameInput) {
         return IntStream.range(0, gameInput.length())
                 .mapToObj(index -> gameInput.substring(index, index + 1))

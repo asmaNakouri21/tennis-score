@@ -11,8 +11,8 @@ public class TennisGameTest {
     public void should_write_scenario_for_player_A_Won_all_balls() throws UnknownPlayerException {
 
         // GIVEN
-        String scorerList = "AAAA";
-        var expectedScenario = List.of(
+        String inputScore = "AAAA";
+        var expectedScore = List.of(
                 "Player A : 15 / Player B : 0",
                 "Player A : 30 / Player B : 0",
                 "Player A : 40 / Player B : 0",
@@ -20,18 +20,18 @@ public class TennisGameTest {
 
         // WHEN
         TennisGame tennisGame = new TennisGame();
-        var actualScenario = tennisGame.getScoreDetails(scorerList);
+        var actualScenario = tennisGame.getScoreDetails(inputScore);
 
         // THEN
-        assertEquals(expectedScenario, actualScenario);
+        assertEquals(expectedScore, actualScenario);
     }
 
     @Test
     public void should_write_scenario_for_player_B_Won_all_balls() throws UnknownPlayerException {
 
         // GIVEN
-        String scorerList = "BBBB";
-        var expectedScenario = List.of(
+        String inputScore = "BBBB";
+        var expectedScore = List.of(
                 "Player A : 0 / Player B : 15",
                 "Player A : 0 / Player B : 30",
                 "Player A : 0 / Player B : 40",
@@ -39,23 +39,23 @@ public class TennisGameTest {
 
         // WHEN
         TennisGame tennisGame = new TennisGame();
-        var actualScenario = tennisGame.getScoreDetails(scorerList);
+        var actualScenario = tennisGame.getScoreDetails(inputScore);
 
         // THEN
-        assertEquals(expectedScenario, actualScenario);
+        assertEquals(expectedScore, actualScenario);
     }
 
 
     @Test
     public void should_get_error_when_scorer_list_is_invalid_cas1() {
         // GIVEN
-        String scorerList = "AAAAA";
+        String inputScore = "AAAAA";
 
         // WHEN
         TennisGame tennisGame = new TennisGame();
 
         // THEN
-        assertThrows(IllegalStateException.class , () -> tennisGame.getScoreDetails(scorerList));
+        assertThrows(IllegalStateException.class , () -> tennisGame.getScoreDetails(inputScore));
     }
 
     @Test
