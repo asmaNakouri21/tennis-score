@@ -159,4 +159,28 @@ public class TennisGameTest {
 
     }
 
+    @Test
+    @DisplayName("Should throw an error when Player A scores after Player B wins the game")
+    public void shouldThrowErrorWhenPlayerAScoresAfterPlayerBWins() throws Exception {
+        // GIVEN
+        String inputScore = "BAABABABBBA";
+        // WHEN
+        TennisGame tennisGame = new TennisGame();
+        // THEN
+        assertThrows(WrongInputException.class , () -> tennisGame.getScoreDetails(inputScore));
+
+    }
+
+    @Test
+    @DisplayName("Should throw an error when Player B scores after Player A wins the game")
+    public void shouldThrowErrorWhenPlayerBScoresAfterPlayerAWins() throws Exception {
+        // GIVEN
+        String inputScore = "ABABBAAAB";
+        // WHEN
+        TennisGame tennisGame = new TennisGame();
+        // THEN
+        assertThrows(WrongInputException.class , () -> tennisGame.getScoreDetails(inputScore));
+
+    }
+
 }
