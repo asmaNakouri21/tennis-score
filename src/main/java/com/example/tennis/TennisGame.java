@@ -51,10 +51,13 @@ public class TennisGame {
             if (isDeuce(winnerBall, loserBall)) {
                 return "DEUCE";
             } else {
-                if (winnerBall.getScore() - loserBall.getScore() == 2) {
+                if (winnerBall.getScore() - loserBall.getScore() == 2){
                     return "WIN";
-                } else {
+                } else if (winnerBall.getScore() - loserBall.getScore() == 1){
                     return "ADVANTAGE";
+                }
+                else {
+                    throw new WrongInputException("Wrong Input Score");
                 }
             }
         }
