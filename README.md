@@ -30,6 +30,6 @@ For example the following input “ABABAA” should print :
 ## Used tools:
 
   Java 17
-  Junit 3.8 for testing
+  Junit 4 for testing
   maven 3
 
