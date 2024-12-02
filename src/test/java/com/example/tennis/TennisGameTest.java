@@ -103,7 +103,7 @@ public class TennisGameTest {
     }
 
     @Test
-    void should_print_scenario_when_player_A_win_after_deuce_and_one_advantage() throws UnknownPlayerException {
+    public void should_print_scenario_when_player_A_win_after_deuce_and_one_advantage() throws UnknownPlayerException {
         // GIVEN
         var expectedScenario = List.of(
                 "Player A : 15 / Player B : 0",

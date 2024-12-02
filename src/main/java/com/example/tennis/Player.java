@@ -15,4 +15,13 @@ public class Player {
     public String getName() {
         return name;
     }
+    public String scoreToDisplay() {
+        return switch (getScore()) {
+            case 0 -> "0";
+            case 1 -> "15";
+            case 2 -> "30";
+            case 3 -> "40";
+            default -> throw new IllegalStateException("Unexpected value: " + getScore());
+        };
+    }
 }
