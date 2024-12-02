@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TennisGameTest {
     @Test
-    public void should_write_scenario_for_player_A_Won_all_balls() {
+    public void should_write_scenario_for_player_A_Won_all_balls() throws UnknownPlayerException {
 
         // GIVEN
         String scorerList = "AAAA";
@@ -27,7 +27,7 @@ public class TennisGameTest {
     }
 
     @Test
-    public void should_write_scenario_for_player_B_Won_all_balls() {
+    public void should_write_scenario_for_player_B_Won_all_balls() throws UnknownPlayerException {
 
         // GIVEN
         String scorerList = "BBBB";
@@ -59,7 +59,7 @@ public class TennisGameTest {
     }
 
     @Test
-    void should_get_error_when_scorer_list_is_invalid() {
+    public void should_get_error_when_scorer_list_is_invalid() {
         // GIVEN
         String scorerList = "ACAZ";
         // WHEN
