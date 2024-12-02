@@ -6,15 +6,18 @@ public class Player {
     public Player(String name) {
         this.name = name;
     }
+
     public void increaseScore() {
         score += 1;
     }
+
     public int getScore() {
         return score;
     }
     public String getName() {
         return name;
     }
+
     public String scoreToDisplay() {
         return switch (getScore()) {
             case 0 -> "0";

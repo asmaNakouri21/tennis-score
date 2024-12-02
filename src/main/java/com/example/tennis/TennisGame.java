@@ -1,6 +1,7 @@
 package com.example.tennis;
 
 import com.example.tennis.exception.UnknownPlayerException;
+import com.example.tennis.exception.WrongInputException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,23 +11,20 @@ public class TennisGame {
 
     Player playerA = new Player("A");
     Player playerB = new Player("B");
-    private static final String WIN_MESSAGE = "Player %s wins the game";
     private final List<String> scenario = new ArrayList<>();
-
     private static final String WIN_MESSAGE_TEMPLATE = "Player %s wins the game";
     public static final String SCORE_MESSAGE_TEMPLATE = "Player A : %s / Player B : %s";
     public static final String DEUCE_MESSAGE = "Deuce";
     public static final String ADVANTAGE_MESSAGE_TEMPLATE = "Deuce, advantage for Player %s";
 
-    public List<String> getScoreDetails(String scorerInput) throws UnknownPlayerException {
+    public List<String> getScoreDetails(String scorerInput) throws Exception {
         List<String> scorers = getScoreListFromScorerInput(scorerInput);
         for (String scorer : scorers) {
-            Player winnerBall = getWinnerPlayer(scorer);
-            Player loserBall = getLooserPlayer(scorer);
+            Player winnerBall = getWinnerBall(scorer);
+            Player loserBall = getLooserBall(scorer);
             winnerBall.increaseScore();
-            var roundResult = calculateRoundScore(winnerBall, loserBall);
-
-            scenario.add(formatedScore(roundResult, winnerBall));        }
+            var gameState = getGameState(winnerBall, loserBall);
+            scenario.add(formatedScore(gameState, winnerBall));        }
         return scenario;
     }
 
@@ -40,18 +38,20 @@ public class TennisGame {
         };
     }
 
-    private String calculateRoundScore(Player winnerPlayer, Player loserPlayer) {
-        if (isGameInLoveStage(winnerPlayer, loserPlayer)) {
-            if (winnerPlayer.getScore() >= 4) {
+    private String getGameState(Player winnerBall, Player loserBall) throws WrongInputException {
+        if (isGameInLoveStage(winnerBall, loserBall)) {
+            if (winnerBall.getScore() == 4) {
                 return "WIN";
-            } else {
+            } else if((winnerBall.getScore() < 4)){
                 return "SCORE";
+            }else{
+                throw new WrongInputException("Unknown player name");
             }
         } else {
-            if (isDeuce(winnerPlayer, loserPlayer)) {
+            if (isDeuce(winnerBall, loserBall)) {
                 return "DEUCE";
             } else {
-                if (winnerPlayer.getScore() - loserPlayer.getScore() == 2) {
+                if (winnerBall.getScore() - loserBall.getScore() == 2) {
                     return "WIN";
                 } else {
                     return "ADVANTAGE";
@@ -73,7 +73,7 @@ public class TennisGame {
                 .toList();
     }
 
-    private Player getWinnerPlayer(String scorerName) throws UnknownPlayerException {
+    private Player getWinnerBall(String scorerName) throws UnknownPlayerException {
         return switch (scorerName) {
             case "A" -> playerA;
             case "B" -> playerB;
@@ -81,11 +81,11 @@ public class TennisGame {
         };
     }
 
-    private Player getLooserPlayer(String ballWinnerName) throws UnknownPlayerException {
-        return getWinnerPlayer(ballWinnerName).equals(playerA) ? playerB : playerA;
+    private Player getLooserBall(String ballWinnerName) throws UnknownPlayerException {
+        return getWinnerBall(ballWinnerName).equals(playerA) ? playerB : playerA;
     }
 
-    private boolean isGameInLoveStage(Player roundScorer, Player roundLooser) {
-        return roundScorer.getScore() < 3 || roundLooser.getScore() < 3;
+    private boolean isGameInLoveStage(Player winnerBall, Player loserBall) {
+        return winnerBall.getScore() < 3 || loserBall.getScore() < 3;
     }
 }

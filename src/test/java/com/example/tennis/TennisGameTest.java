@@ -1,6 +1,7 @@
 package com.example.tennis;
 
 import com.example.tennis.exception.UnknownPlayerException;
+import com.example.tennis.exception.WrongInputException;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TennisGameTest {
     @Test
     @DisplayName("Should correctly return the score details when Player A wins all the balls in a game")
-    public void shouldReturnCorrectScoreForPlayerAWinAllBals() throws UnknownPlayerException {
+    public void shouldReturnCorrectScoreForPlayerAWinAllBals() throws Exception {
 
         // GIVEN
         String inputScore = "AAAA";
@@ -30,7 +31,7 @@ public class TennisGameTest {
 
     @Test
     @DisplayName("Should correctly return the score details when Player B wins all the balls in a game")
-    public void shouldReturnCorrectScoreForPlayerBWinAllBals() throws UnknownPlayerException {
+    public void shouldReturnCorrectScoreForPlayerBWinAllBals() throws Exception {
 
         // GIVEN
         String inputScore = "BBBB";
@@ -69,12 +70,12 @@ public class TennisGameTest {
         TennisGame tennisGame = new TennisGame();
 
         // THEN
-        assertThrows(IllegalStateException.class , () -> tennisGame.getScoreDetails(inputScore));
+        assertThrows(WrongInputException.class , () -> tennisGame.getScoreDetails(inputScore));
     }
 
     @Test
     @DisplayName("Should correctly return the score details when Player A wins 2 points and Player B wins 3 points and the game")
-    public void shouldReturnCorrectScoreDetailsWhenPlayerBWinsGame() throws UnknownPlayerException {
+    public void shouldReturnCorrectScoreDetailsWhenPlayerBWinsGame() throws Exception {
         // GIVEN
         String inputScore = "AABBBB";
         var expectedScore = List.of(
@@ -92,7 +93,7 @@ public class TennisGameTest {
     }
     @Test
     @DisplayName("Should correctly return the score details when Player B wins 2 points and Player A wins 4 points and the game")
-    public void shouldReturnCorrectScoreDetailsWhenPlayerAWinsGame() throws UnknownPlayerException {
+    public void shouldReturnCorrectScoreDetailsWhenPlayerAWinsGame() throws Exception {
         // GIVEN
         String inputScore = "ABABAA";
         var expectedScore = List.of(
@@ -111,7 +112,7 @@ public class TennisGameTest {
 
     @Test
     @DisplayName("Should correctly return score details when the game reaches deuce after each player wins 4 points, and then Player A wins")
-    public void shouldReturnCorrectScoreDetailsWhenGameReachesDeuceAndPlayerAWins() throws UnknownPlayerException {
+    public void shouldReturnCorrectScoreDetailsWhenGameReachesDeuceAndPlayerAWins() throws Exception {
         // GIVEN
         String inputScore = "ABABBAAA";
 
@@ -134,7 +135,7 @@ public class TennisGameTest {
     @Test
 
     @DisplayName("Should correctly return score details when game reaches deuce twice and Player B wins")
-    public void shouldReturnCorrectScoreDetailsWhenGameReachesDeuceAndPlayerBWins() throws UnknownPlayerException {
+    public void shouldReturnCorrectScoreDetailsWhenGameReachesDeuceAndPlayerBWins() throws Exception {
         // GIVEN
         String inputScore = "BAABABABBB";
         var expectedScenario = List.of(
